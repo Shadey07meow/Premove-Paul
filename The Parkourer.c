@@ -9,87 +9,307 @@
     A game about a parkour guy who runs around the map and gets to a orange square
 */
 
-// roomLayouts
-// This is a global variable that needs to exist because this will tell all the other functions what room level we are on
-int roomLevel = 0;
+// Initiate the structs to avoid errors
+
+
+// Screen struct for
+struct screen
+{
+    int lines;
+    int screenAnimMS;
+    char screenElement[100][100];
+};
+
+const struct screen screen_start =
+{
+        23,
+        50,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                      Welcome to Pre-Move Paul                  ||"},
+            {"||                               _____                            ||"},
+            {"||                              /     \\                           ||"},
+            {"||                             /       \\                          ||"},
+            {"||                            |         |                         ||"},
+            {"||                             \\       /                          ||"},
+            {"||                              \\_____/                           ||"},
+            {"||                              |     |                           ||"},
+            {"||                              |     |                           ||"},
+            {"||                              |     |                           ||"},
+            {"||                              |     |                           ||"},
+            {"||                              |     |                           ||"},
+            {"||                              |_____|                           ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                    Press any button to continue                ||"},
+            {"||                                                                ||"},
+            {"===================================================================="}
+        }
+};
+
+const struct screen screen_mainMenu1 =
+{
+        25,
+        0,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||   ||==\\\\   //=\\\\  ||   || ||                                   ||"},
+            {"||   ||   || //   \\\\ ||   || ||                                   ||"},
+            {"||   ||==//  ||===|| ||   || ||                                   ||"},
+            {"||   ||      ||   || ||   || ||          ()                       ||"},
+            {"||   ||      ||   ||  \\\\-//  ||=====     ||                       ||"},
+            {"||                                                                ||"},
+            {"|| > P - Play                                                     ||"},
+            {"||                                                               @||"},
+            {"|| > L - Levels                                                   ||"},
+            {"||                                                             @ @||"},
+            {"|| > H - How to play                                          @@  ||"},
+            {"||                                                          _@@@  ||"},
+            {"|| > C - Credits                                           /___\\  ||"},
+            {"||                                               ___________|_|___||"},
+            {"|| > Q - Quit                                   /                 ||"},
+            {"||                                             /__________________||"},
+            {"||                                              |   ___         __||"},
+            {"||                                              |  |_|_|       |  ||"},
+            {"||                                              |              |  ||"},
+            {"===================================================================="}
+        }
+};
+
+const struct screen screen_mainMenu2 =
+{
+        25,
+        0,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||   ||==\\\\   //=\\\\  ||   || ||                                   ||"},
+            {"||   ||   || //   \\\\ ||   || ||                                   ||"},
+            {"||   ||==//  ||===|| ||   || ||                                   ||"},
+            {"||   ||      ||   || ||   || ||              ()                   ||"},
+            {"||   ||      ||   ||  \\\\-//  ||=====         ||                   ||"},
+            {"||                                                                ||"},
+            {"|| > P - Play                                                     ||"},
+            {"||                                                                ||"},
+            {"|| > L - Levels                                                  @||"},
+            {"||                                                              @ ||"},
+            {"|| > H - How to play                                           @@ ||"},
+            {"||                                                          __@@  ||"},
+            {"|| > C - Credits                                           /___\\  ||"},
+            {"||                                               ___________|_|___||"},
+            {"|| > Q - Quit                                   /                 ||"},
+            {"||                                             /__________________||"},
+            {"||                                              |   ___         __||"},
+            {"||                                              |  |_|_|       |  ||"},
+            {"||                                              |              |  ||"},
+            {"===================================================================="}
+        }
+};
+
+const struct screen screen_mainMenu3 =
+{
+        25,
+        0,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||   ||==\\\\   //=\\\\  ||   || ||                                   ||"},
+            {"||   ||   || //   \\\\ ||   || ||                                   ||"},
+            {"||   ||==//  ||===|| ||   || ||                                   ||"},
+            {"||   ||      ||   || ||   || ||                  ()               ||"},
+            {"||   ||      ||   ||  \\\\-//  ||=====             ||               ||"},
+            {"||                                                                ||"},
+            {"|| > P - Play                                                     ||"},
+            {"||                                                               @||"},
+            {"|| > L - Levels                                                   ||"},
+            {"||                                                              @ ||"},
+            {"|| > H - How to play                                           @  ||"},
+            {"||                                                          _@@@  ||"},
+            {"|| > C - Credits                                           /___\\  ||"},
+            {"||                                               ___________|_|___||"},
+            {"|| > Q - Quit                                   /                 ||"},
+            {"||                                             /__________________||"},
+            {"||                                              |   ___         __||"},
+            {"||                                              |  |_|_|       |  ||"},
+            {"||                                              |              |  ||"},
+            {"===================================================================="}
+        }
+};
+const struct screen screen_mainMenu4 =
+{
+        25,
+        0,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||   ||==\\\\   //=\\\\  ||   || ||                                   ||"},
+            {"||   ||   || //   \\\\ ||   || ||                                   ||"},
+            {"||   ||==//  ||===|| ||   || ||                                   ||"},
+            {"||   ||      ||   || ||   || ||              ()                   ||"},
+            {"||   ||      ||   ||  \\\\-//  ||=====         ||                   ||"},
+            {"||                                                                ||"},
+            {"|| > P - Play                                                     ||"},
+            {"||                                                                ||"},
+            {"|| > L - Levels                                                   ||"},
+            {"||                                                              @ ||"},
+            {"|| > H - How to play                                          @@@ ||"},
+            {"||                                                          _@@   ||"},
+            {"|| > C - Credits                                           /___\\  ||"},
+            {"||                                               ___________|_|___||"},
+            {"|| > Q - Quit                                   /                 ||"},
+            {"||                                             /__________________||"},
+            {"||                                              |   ___         __||"},
+            {"||                                              |  |_|_|       |  ||"},
+            {"||                                              |              |  ||"},
+            {"===================================================================="}
+        }
+};
+
+const struct screen screen_mainMenu5 =
+{
+        25,
+        0,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||   ||==\\\\   //=\\\\  ||   || ||                                   ||"},
+            {"||   ||   || //   \\\\ ||   || ||                                   ||"},
+            {"||   ||==//  ||===|| ||   || ||                                   ||"},
+            {"||   ||      ||   || ||   || ||          ()                       ||"},
+            {"||   ||      ||   ||  \\\\-//  ||=====     ||                       ||"},
+            {"||                                                                ||"},
+            {"|| > P - Play                                                     ||"},
+            {"||                                                               @||"},
+            {"|| > L - Levels                                                 @@||"},
+            {"||                                                             @@ ||"},
+            {"|| > H - How to play                                          @   ||"},
+            {"||                                                          _@@@  ||"},
+            {"|| > C - Credits                                           /___\\  ||"},
+            {"||                                               ___________|_|___||"},
+            {"|| > Q - Quit                                   /                 ||"},
+            {"||                                             /__________________||"},
+            {"||                                              |   ___         __||"},
+            {"||                                              |  |_|_|       |  ||"},
+            {"||                                              |              |  ||"},
+            {"===================================================================="}
+        }
+};
+
+const struct screen screen_howToPlay1 =
+{
+        23,
+        50,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||  Q - Back to menu                                              ||"},
+            {"||                                                                ||"},
+            {"||  What is Pre-move Paul?                                        ||"},
+            {"||   > Pre-move Paul is a prediction style puzzle game            ||"},
+            {"||     You input moves in a chained order. Paul then follows      ||"},
+            {"||     whatever you pressed and does it despite what happens.     ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||        This is Paul             _______________________        ||"},
+            {"||           |                    |                       |       ||"},
+            {"||           |                    | Hello I am Paul  :P   |       ||"},
+            {"||           |                    |                       |       ||"},
+            {"||           |                    | ______________________|       ||"},
+            {"||           |                    |/                              ||"},
+            {"||           |-----------------> ()                               ||"},
+            {"||                               ||                               ||"},
+            {"||                                                N - Next Page   ||"},
+            {"||                                                                ||"},
+            {"===================================================================="}
+        }
+};
+
+
+const struct screen screen_howToPlay2 =
+{
+        23,
+        50,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||  Q - Back to menu                                              ||"},
+            {"||                                                                ||"},
+            {"||  How do you move Paul?                                         ||"},
+            {"||   > Paul has Hyper-Planing Doing Disorder, meaning he has      ||"},
+            {"||     to plan whatever he has to do in advance.                  ||"},
+            {"||                                                                ||"},
+            {"||      His moves are: a/A (left)   You type them out beforehand  ||"},
+            {"||                     w/W (jump)                                 ||"},
+            {"||                     d/D (right)  Input: ddd a2 w d3            ||"},
+            {"||                                                                ||"},
+            {"||      _______________________      ___________________________  ||"},
+            {"||     |    a    a    w    d   |    |      a2            d3     | ||"},
+            {"||     | (left left jump right)|    | (left twice) (right thrice| ||"},
+            {"||     | ______________________|    | __________________________| ||"},
+            {"||     |/                           |/                            ||"},
+            {"||     ()                           ()                            ||"},
+            {"||     ||                           ||                            ||"},
+            {"||   P - Previous Page                            N - Next Page   ||"},
+            {"||                                                                ||"},
+            {"===================================================================="}
+        }
+};
+
+
+
+const struct screen screen_gameOver1 =
+{
+        23,
+        200,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||             Your Hyper-Planing Doing Disorder got you          ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                    Would you like to try again?                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||      > Y - Yes                          >  N - No              ||"},
+            {"||                                            (Go to main menu)   ||"},
+            {"||                                                                ||"},
+            {"===================================================================="}
+        }
+};
+
+typedef struct  {int x, y;} Vec2;
 
 
 struct roomData {
     int roomX;
     int roomY;
-    int roomTime;
     int attempts;
 };
 
-struct roomData room[10] =
-{
-    // Room 0
-    {11, 10, 30, 5},
-    // Room 1
-    {17, 10, 30, 5},
-    // Room 2
-    {17, 20, 30, 5}
-};
-
-/*                  Room Height || Room Length ||  Room Time    || Attempt Times
-    Room Level 0:     20 Units      30 Units       30 Seconds           3 Times
 
 
-*/
 
 
-// Container of all the roomLayouts we're in
-const int roomLayouts[3][100][100] = {
-    {
-        // Room 0
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 3, 4, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 3, 4, 0, 0, 0, 9, 10, 0, 0, 5},
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
-        {5, 8, 0, 1, 0, 0, 0, 0, 7, 5, 5},
-        {5, 5, 8, 2, 11, 12, 0, 7, 5, 5, 5},
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-    },
-    {
-        // Room 1
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 1, 0, 7, 5, 0, 8, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
-        {5, 2, 7, 5, 5, 0, 5, 8, 0, 0, 0, 0, 0, 0, 3, 4, 5},
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-    },
-    {
-        // Room 2
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
-        {5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 7, 5, 5},
-        {5, 0, 5, 5, 5, 0, 5, 5, 5, 5, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 5, 8, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 5, 5, 5, 0, 5, 5, 0, 5, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
-        {5, 0, 1, 0, 0, 0, 0, 0, 7, 5, 5},
-        {5, 0, 2, 0, 0, 9, 0, 7, 5, 5, 5},
-        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-    }
-};
+
+// roomLayouts
+// This is a global variable that needs to exist because this will tell all the other functions what room level we are on
+int roomLevel = 0;
+
 
 // This variable is for handling the current room we have, basically we just make this room equal to all the values in the room we're currently at
 int curRoom[100][100];
@@ -97,11 +317,14 @@ int curRoom[100][100];
 // Function prototypes declaration
 void update();
 void start();
+void restart();
 void initialize();
 
 // UI
 void startScreen();
+void mainMenu();
 void drawGameOver();
+double mainMenuAnimTime = 1/16;
 
 
 // Functions for displaying the screen
@@ -109,6 +332,9 @@ void drawScreen();
 void printCell(int);
 void clearScreen();
 void setPlayerBackground();
+void printDisplayCoordinatesX();
+void displayUIScreen(struct screen);
+void howToPlayScreen();
 
 // Function responsible for the roomLayouts
 void setRoom(int);
@@ -140,7 +366,6 @@ clock_t currentFrameTime = 0;
 double deltaTime = 0;
 
 //  Create vector 2 struct: A Vector 2 only holds 2 integers, a x and a y
-typedef struct  {int x, y;} Vec2;
 Vec2 headPosPL;
 Vec2 bodyPosPL;
 
@@ -175,6 +400,118 @@ void winCheck();
 #define RESET         "\033[0m"
 
 
+// Others
+
+
+struct roomData room[10] =
+{
+    // Room 1
+    {18, 10, 5},
+    // Room 2
+    {20, 14, 5},
+    // Room 3
+    {11, 20, 5},
+    //Room 4
+    {20, 15, 5},
+    //Room 5
+    {20, 15, 5},
+};
+
+// Container of all the roomLayouts were in
+const int roomLayouts[5][100][100] = {
+    {
+        // Room 1
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 5, 5, 0, 0, 0, 0, 5},
+        {5, 1, 0, 0, 0, 7, 5, 0, 5, 5, 0, 5, 5, 0, 0, 0, 0, 5},
+        {5, 2, 11, 12, 7, 5, 5, 0, 5, 5, 0, 5, 5, 0, 9, 10, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+
+    },
+    {
+        // Room 2
+          {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 3, 4, 0, 0, 0, 0, 0, 11, 12, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5, 5},
+        {5, 0, 0, 0, 0, 7, 5, 5, 5, 5, 0, 5, 0, 5, 0, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 7, 5, 5, 5, 5, 5, 0, 5, 0, 5, 0, 5, 5, 5, 5, 5},
+        {5, 0, 0, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5},
+        {5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5},
+        {5,5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 0, 0, 0, 0, 0, 2, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+
+    },
+    {
+        // Room 3
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 8, 0, 0, 11, 12, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 7, 5, 5},
+        {5, 0, 5, 5, 5, 0, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 8, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 0, 5, 5, 0, 5, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5},
+        {5, 0, 1, 0, 0, 0, 0, 0, 7, 5, 5},
+        {5, 0, 2, 0, 0, 9, 10, 7, 5, 5, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+    },
+    {
+        //Room 4
+         {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 0, 0, 0, 0, 0, 3, 4, 0, 5},
+        {5, 0, 0, 0, 7, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 5, 5, 5, 0, 5, 0, 5, 5, 0, 5, 0, 5, 5, 5, 5, 5, 5},
+        {5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 8, 0, 0, 0, 0, 0, 0, 0, 9, 10, 0, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 0, 5, 0, 5, 0, 5, 5, 5, 8, 0, 0, 0, 0, 5},
+        {5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 8, 0, 1, 0, 5},
+        {5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 8, 2, 0, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+
+    },
+    {
+        // Room 5
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 5, 5},
+        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5},
+        {5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 2, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 0, 5, 0, 5, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
+        {5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5},
+        {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+
+    }
+};
+
+
 
 
 
@@ -185,17 +522,15 @@ int main()
     // Initialize function
     initialize();
 
-    // Start Function - Used for the start of the game
-    start();
 
-    // Update Function - Used for the update function of the game
-    update();
+
 
 }
 
 // Initialize functions
 void initialize()
 {
+    printf("\e[?25l");
     // Start at a set room
     startScreen();
 
@@ -206,57 +541,122 @@ void initialize()
 
 void startScreen()
 {
-    printf("******************************************************\n");
-    Sleep(100);
-    printf("*                                                    *\n");
-    Sleep(100);
-    printf("*              P R E M O V E   P A U L               *\n");
-    Sleep(100);
-    printf("*                                                    *\n");
-    Sleep(100);    printf("*                                                    *\n");
-    Sleep(100);
-    printf("*               This shit is so ass T-T              *\n");
-    Sleep(100);
-    printf("*                                                    *\n");
-    Sleep(100);
-    printf("*                 PRESS ANY BUTTON                   *\n");
-    Sleep(100);
-    printf("******************************************************\n");
-
+    displayUIScreen(screen_start);
     while(!_kbhit());
     getch();
     system("cls");
+    displayUIScreen(screen_mainMenu1);
+    mainMenu();
+}
+
+
+int state = 1;
+void mainMenu()
+{
+    while(1)
+    {
+        timeHandler();
+
+       mainMenuAnimTime += deltaTime;
+
+       if(mainMenuAnimTime > 1000 / 4)
+       {
+            state++;
+            if(state > 4) state = 1;
+
+            system("cls");
+            switch(state)
+            {
+                case 1: displayUIScreen(screen_mainMenu1); break;
+                case 2: displayUIScreen(screen_mainMenu2); break;
+                case 3: displayUIScreen(screen_mainMenu3); break;
+                case 4: displayUIScreen(screen_mainMenu4); break;
+            }
+
+
+            if(_kbhit())
+            {
+                char c = getch();
+
+                switch(c)
+                {
+                    case 'p':
+                    case 'P': start(); return; break;
+                    case 'h':
+                    case 'H': howToPlayScreen(); return; break;
+
+                }
+            }
+            mainMenuAnimTime = 0;
+        }
+    }
+}
+
+void howToPlayScreen()
+{
+    system("cls");
+    displayUIScreen(screen_howToPlay1);
+
+    int page = 1;
+    int curPage = page;
+    while(1)
+    {
+        if(curPage != page)
+        {
+            if(page > 3) page = 3;
+            if(page < 1) page = 1;
+            curPage = page;
+
+            system("cls");
+            switch(page)
+            {
+                case 1: displayUIScreen(screen_howToPlay1); break;
+                case 2: displayUIScreen(screen_howToPlay2); break;
+            }
+        }
+
+        if(_kbhit())
+        {
+            char c = getch();
+
+            switch(c)
+            {
+                // Y case, Quit start screen
+                case 'Q':
+                case 'q': mainMenu(); return; break;
+
+                // N case, shows next page
+                case 'N':
+                case 'n': page++; break;
+                // P case, shows previous page
+                case 'P':
+                case 'p': page--; break;
+            }
+        }
+    }
 }
 
 void drawGameOver()
 {
     system("cls");
-    printf("******************************************************\n");
-    Sleep(100);
-    printf("*                                                    *\n");
-    Sleep(100);
-    printf("*                   GIT GUD SCRUB                    *\n");
-    Sleep(100);
-    printf("*                     (##)                           *\n");
-    Sleep(100);
-    printf("*                     |()|                           *\n");
-    Sleep(100);    printf("*                    _|()|_ _                        *\n");
-    Sleep(100);
-    printf("*                   (()()()())                       *\n");
-    Sleep(100);
-    printf("*                   (        |                       *\n");
-    Sleep(100);
-    printf("*                   (        |                       *\n");
-    Sleep(100);
-    printf("*                    \\      /                        *\n");
-    Sleep(100);
-    printf("*                     |     |                        *\n");
-    Sleep(100);
-    printf("******************************************************\n");
-    Sleep(100);
+    displayUIScreen(screen_gameOver1);
+    while(1)
+    {
+        if(_kbhit())
+        {
+            char c = getch();
 
-    while(!_kbhit());
-    getch();
+            switch(c)
+            {
+                case 'y':
+                case 'Y': restart(); break;
+                case 'n':
+                case 'N': mainMenu(); break;
+
+            }
+        }
+    }
+
 }
 
 // Beginning of the game function
@@ -264,7 +664,13 @@ void start()
 {
     attemptTimes = room[roomLevel].attempts;
     setRoom(roomLevel);
+    system("cls");
     drawScreen();
+    gameOn = true;
+
+
+    // Update Function - Used for the update function of the game
+    update();
 }
 
 // Update Functions
@@ -285,9 +691,9 @@ void update()
     }
 
     // Checks if the game should still run
-    if(gameOn) update();
+    if(gameOn) update(); else gameOver();
 
-    gameOver();
+
 
 
     return;
@@ -302,38 +708,82 @@ void gameOver()
 void drawScreen()
 {
     clearScreen();
+
     // Responsible for drawing the entire room
     for(int y = 0; y < room[roomLevel].roomY; y++)
     {
+        if(y == 0)
+        {
+            for(int i = 0; i < room[roomLevel].roomX  + 4; i++)
+            {
+                printf("--");
+            }
+            printf("\n");
+        }
+
         for(int x = 0; x < room[roomLevel].roomX; x++)
         {
-            // Send the value of the current room to the printCell function
+
+            if(x == 0)
+            {
+                printf("| ");
+            }
+
             printCell(curRoom[y][x]);
-            if(x == room[roomLevel].roomX - 1) printf(" > %d",  room[roomLevel].roomY - y);
+
+            if(x == room[roomLevel].roomX - 1)
+            {
+                printf("> %d", room[roomLevel].roomY - y);
+                if(room[roomLevel].roomY - y >= 10) printf(" |"); else printf("  |");
+
+            }
+
         }
         printf("\n");
-    }
 
-    int currentCharacter = 'A';
 
-    for(int i = 0; i < 2; i++)
-    {
-        for(int y = 0; y < room[roomLevel].roomY + 1; y++)
+        // Handles displaying the coordinates of the Y level of the room
+        if(y ==  room[roomLevel].roomY - 1)
         {
-                if (i == 0)
-                {
-                    printf("v ");
-                } else
-                {
-                    printf("%c ", (char)currentCharacter);
-                    currentCharacter++;
-                }
+            printDisplayCoordinatesX();
+
+            printf("\n");
+            for(int i = 0; i < room[roomLevel].roomX + 4; i++)
+            {
+                printf("--");
+            }
+
         }
-        printf("\n");
     }
+
+
 
 }
 
+
+
+void printDisplayCoordinatesX()
+{
+    // Purpose of the function is to print the lower portion of the board
+    // Added for clarity
+    int currentCharacter = 'A';
+    for(int i = 0; i < room[roomLevel].roomX; i++)
+    {
+        if(i == 0) printf("| ");
+        printf("v ");
+        if(i == room[roomLevel].roomX - 1) printf("     |");
+    }
+
+    printf("\n");
+
+    for(int i = 0; i < room[roomLevel].roomX; i++)
+    {
+        if(i == 0) printf("| ");
+        printf("%c ", currentCharacter);
+        if(i == room[roomLevel].roomX - 1) printf("     |");
+        currentCharacter++;
+    }
+}
 
 void printCell(int value)
 {
@@ -343,16 +793,16 @@ void printCell(int value)
         case 0: printf("  "); break;    // Blank space
         case 1: printf(BEIGE"()"); break;    // Player head
         case 2: printf(RED"||"); break;    // Player body
-        case 3: printf("|-"); break;    // Door left side
-        case 4: printf("-|"); break;    // Door Right side
-        case 5: printf(WHITE"[]"); break;    // Normal block
+        case 3: printf(YELLOW"|-"); break;    // Door left side
+        case 4: printf(YELLOW"-|"); break;    // Door Right side
+        case 5: printf("[]"); break;    // Normal block
         case 6: printf("/\\"); break;   // Spike
         case 7: printf("/T"); break;    // Right side staircase
         case 8: printf("T\\"); break;    // Left side staircase
-        case 9: printf("[-"); break;    // Left side Couch
-        case 10: printf("-]"); break;    // Left side Couch
-        case 11: printf("[="); break;    // Upside Lamp
-        case 12: printf("=]"); break;    // Downside Lamp
+        case 9: printf(BRIGHT_GREEN"[-"); break;    // Left side Couch
+        case 10: printf(BRIGHT_GREEN"-]"); break;    // Left side Couch
+        case 11: printf(BRIGHT_CYAN"[="); break;    // Upside Lamp
+        case 12: printf(BRIGHT_CYAN"=]"); break;    // Downside Lamp
         default: printf("er"); break;   // Error case
     }
 
@@ -376,8 +826,9 @@ void getInput()
 {
     char inputData[100] = "";
 
-    printf("\nYou have %d attempts left", attemptTimes);
-    printf("\nControls are: \n    D/d - Right\n    A/a - Left\n    W/w - Jump\n    F/f - Wait\nInput: ");
+    printf("\n\n============================================");
+    printf("\nAttempts left: %d", attemptTimes);
+    printf("\n\nControls: \n    D/d - Right      Input only R to restart level\n    A/a - Left\n    W/w - Jump\n\nInput:  ");
 
     // Because we are using sounds and such, we cannot use scanf() because it is a blocking function
     // So we opt to recreate it's functionality using conio.h
@@ -419,6 +870,7 @@ void getInput()
             } else if((int)c == 13)
             {
                 // 13 is the ASCII value of
+                drawScreen();
                 printf("hello");
                 break;
             }
@@ -431,14 +883,22 @@ void getInput()
     int inputLength = strlen(inputData);
     previousFrameTime = clock();
 
+
+    if(inputData[0] == 'R' || inputData[0] == 'r') restart();
+
     printf("\033[2J\033[H"); //  Makes the screen black for 1 frame
     movePlayer(inputData, inputLength);
 }
 
+void restart()
+{
+    start();
+    attemptTimes++;
+    drawScreen();
+}
 
 void movePlayer(char inputData[],int inputLength)
 {
-
     // Test input of the data
     for(int i = 0; i < inputLength; i++)
     {
@@ -491,6 +951,7 @@ void movePlayer(char inputData[],int inputLength)
 
     // After doing all those actions, we check if our current position is at the door
     winCheck();
+    drawScreen();
 
 }
 
@@ -760,5 +1221,19 @@ void winCheck()
     {
         attemptTimes--;
     }
-
 }
+
+void displayUIScreen(struct screen e)
+{
+    for(int i = 0; i < e.lines; i++)
+    {
+        printf("%s\n", e.screenElement[i]);
+        Sleep(e.screenAnimMS);
+    }
+}
+
+
+
+
+
+
