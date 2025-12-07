@@ -4,10 +4,106 @@
 #include<windows.h>
 #include<conio.h>
 #include<time.h>
+#include <process.h>
+
+//notes
+
+/* --- OCTAVE 2  --- */
+enum notes{
+
+    C2  = 65,
+    Cs2 = 69,
+    D2  = 73,
+    Ds2 = 78,
+    E2  = 82,
+    F2  = 87,
+    Fs2 = 93,
+    G2  = 98,
+    Gs2 = 104,
+    A2  = 110,
+    As2 = 117,
+    B2  = 123,
+
+/* --- OCTAVE 3 --- */
+    C3  = 131,
+    Cs3 = 139,
+    D3  = 147,
+    Ds3 = 156,
+    E3  = 165,
+    F3  = 175,
+    Fs3 = 185,
+    G3  = 196,
+    Gs3 = 208,
+    A3  = 220,
+    As3 = 233,
+    B3  = 247,
+
+/* --- OCTAVE 4 (Middle C Range) --- */
+    C4  = 262,
+    Cs4 = 277,
+    D4  = 294,
+    Ds4 = 311,
+    E4  = 330,
+    F4  = 349,
+    Fs4 = 370,
+    G4  = 392,
+    Gs4 = 415,
+    A4  = 440,
+    As4 = 466,
+    B4  = 494,
+
+/* --- OCTAVE 5 --- */
+    C5  = 523,
+    Cs5 = 554,
+    D5  = 587,
+    Ds5 = 622,
+    E5  = 659,
+    F5  = 698,
+    Fs5 = 740,
+    G5  = 784,
+    Gs5 = 831,
+    A5  = 880,
+    As5 = 932,
+    B5  = 988,
+
+    /* --- OCTAVE 6 --- */
+    C6  = 1047,
+    Cs6 = 1109,
+     D6  = 1175,
+    Ds6 = 1245,
+    E6  = 1319,
+    F6  = 1397,
+    Fs6 = 1480,
+    G6  = 1568,
+    Gs6 = 1661,
+    A6  = 1760,
+    As6 = 1865,
+    B6  = 1976,
+
+    rest = 0,
+
+
+
+};
+
+void delayMs(int ms){
+    clock_t start = clock();
+    while ((clock() - start) * 1000 / CLOCKS_PER_SEC < ms);
+}
+
+
+void play(int melody[][2], int length){
+    for (int i = 0; i < length; i++) {
+        Beep(melody[i][0], melody[i][1]);  // sound
+        delayMs(10);                      // micro rest between notes
+    }
+}
+
 
 /*
     A game about a parkour guy who runs around the map and gets to a orange square
 */
+
 
 // Initiate the structs to avoid errors
 
@@ -234,7 +330,6 @@ const struct screen screen_howToPlay1 =
         }
 };
 
-
 const struct screen screen_howToPlay2 =
 {
         23,
@@ -265,7 +360,35 @@ const struct screen screen_howToPlay2 =
         }
 };
 
-
+const struct screen screen_quitScreen =
+{
+        23,
+        200,
+        {
+            {"===================================================================="},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                   __                           ||"},
+            {"||                                  /__\\                           ||"},
+            {"||                       ____________||__                         ||"},
+            {"||                      /- - - - - - - - \\                        ||"},
+            {"||                     /- - - - - - - - - \\                       ||"},
+            {"||                    /- - - - - - - - - - \\                      ||"},
+            {"||                    [][][][][][][][][][][]                      ||"},
+            {"||                    []                  []                      ||"},
+            {"||                    []        ()        []                      ||"},
+            {"||                    []  [==]  ||  [==]  []                      ||"},
+            {"||                    [][][][][][][][][][][]                      ||"},
+            {"||                                                                ||"},
+            {"||                   Thank you for playing!!!                     ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"||                                                                ||"},
+            {"===================================================================="}
+        }
+};
 
 const struct screen screen_gameOver1 =
 {
@@ -301,11 +424,6 @@ struct roomData {
     int attempts;
 };
 
-
-
-
-
-
 // roomLayouts
 // This is a global variable that needs to exist because this will tell all the other functions what room level we are on
 int roomLevel = 0;
@@ -319,6 +437,19 @@ void update();
 void start();
 void restart();
 void initialize();
+
+// sound
+void delayMs(int ms);
+void play(int melody[][2], int length);
+void playWinSound();
+void playGameOverSound();
+void playErrorSound();
+void menuMusicThread();
+void gameplayMusicThread();
+void stopAllMusic();
+bool menuMusicRunning = false;
+bool gameplayMusicRunning = false;
+
 
 // UI
 void startScreen();
@@ -335,6 +466,7 @@ void setPlayerBackground();
 void printDisplayCoordinatesX();
 void displayUIScreen(struct screen);
 void howToPlayScreen();
+void quitScreen();
 
 // Function responsible for the roomLayouts
 void setRoom(int);
@@ -396,12 +528,10 @@ void winCheck();
 #define BRIGHT_MAGENTA "\033[95m"
 #define BRIGHT_CYAN    "\033[96m"
 #define BRIGHT_WHITE   "\033[97m"
-
 #define RESET         "\033[0m"
 
 
 // Others
-
 
 struct roomData room[10] =
 {
@@ -511,19 +641,11 @@ const int roomLayouts[5][100][100] = {
     }
 };
 
-
-
-
-
-
 int main()
 {
 
     // Initialize function
     initialize();
-
-
-
 
 }
 
@@ -531,6 +653,11 @@ int main()
 void initialize()
 {
     printf("\e[?25l");
+
+
+    menuMusicRunning = true;
+    _beginthread(menuMusicThread, 0, NULL);
+
     // Start at a set room
     startScreen();
 
@@ -552,12 +679,21 @@ void startScreen()
 
 int state = 1;
 void mainMenu()
-{
+
+    {
+    // Start menu music
+    if(!menuMusicRunning) {
+        stopAllMusic(); // Stop any other music first
+        menuMusicRunning = true;
+        _beginthread(menuMusicThread, 0, NULL);
+    }
+
     while(1)
     {
         timeHandler();
 
        mainMenuAnimTime += deltaTime;
+
 
        if(mainMenuAnimTime > 1000 / 4)
        {
@@ -574,6 +710,7 @@ void mainMenu()
             }
 
 
+
             if(_kbhit())
             {
                 char c = getch();
@@ -581,15 +718,28 @@ void mainMenu()
                 switch(c)
                 {
                     case 'p':
-                    case 'P': start(); return; break;
+                    case 'P':
+                        stopAllMusic();
+                        start();
+                    return; break;
                     case 'h':
                     case 'H': howToPlayScreen(); return; break;
+                    case 'q':
+                    case 'Q': quitScreen(); return; break;
 
                 }
             }
             mainMenuAnimTime = 0;
+
         }
     }
+}
+
+void quitScreen()
+{
+    system("cls");
+    displayUIScreen(screen_quitScreen);
+    return;
 }
 
 void howToPlayScreen()
@@ -640,6 +790,12 @@ void drawGameOver()
 {
     system("cls");
     displayUIScreen(screen_gameOver1);
+
+     // Switch back to menu music
+    stopAllMusic();
+    menuMusicRunning = true;
+    _beginthread(menuMusicThread, 0, NULL);
+
     while(1)
     {
         if(_kbhit())
@@ -649,7 +805,8 @@ void drawGameOver()
             switch(c)
             {
                 case 'y':
-                case 'Y': restart(); break;
+                case 'Y': stopAllMusic(); // Stop menu music
+                          restart(); break;
                 case 'n':
                 case 'N': mainMenu(); break;
 
@@ -668,6 +825,9 @@ void start()
     drawScreen();
     gameOn = true;
 
+
+    gameplayMusicRunning = true;
+    _beginthread(gameplayMusicThread, 0, NULL);
 
     // Update Function - Used for the update function of the game
     update();
@@ -701,6 +861,7 @@ void update()
 
 void gameOver()
 {
+
     drawGameOver();
 }
 
@@ -892,6 +1053,9 @@ void getInput()
 
 void restart()
 {
+
+    gameplayMusicRunning = true; // Start gameplay music
+    _beginthread(gameplayMusicThread, 0, NULL);
     start();
     attemptTimes++;
     drawScreen();
@@ -1215,6 +1379,9 @@ void winCheck()
         printf("\nYou win!!!");
         Beep(2000, 1000);
 
+        stopAllMusic();
+        Sleep(50);
+
         roomLevel++;
         start();
     } else
@@ -1230,6 +1397,56 @@ void displayUIScreen(struct screen e)
         printf("%s\n", e.screenElement[i]);
         Sleep(e.screenAnimMS);
     }
+}
+
+
+// Menu melody
+void menuMusicThread()
+{
+    int bpm = 120;
+    int beat = 60000 / bpm;
+
+    int menuMelody[][2] = {
+        {Cs4, beat},{Ds2,  beat },{Ds5, beat/2},{Cs5, beat/2},
+    };
+    int melodyLen = sizeof(menuMelody) / sizeof(menuMelody[0]);
+
+    while(menuMusicRunning) {
+        play(menuMelody, melodyLen);
+        if(!menuMusicRunning) break;
+
+    }
+}
+
+// Gameplay melody
+void gameplayMusicThread()
+{
+    int bpm = 120;
+    int beat = 60000 / bpm;
+
+
+    int gameplayMelody[][2] = {
+        {Ds3, beat},{Fs2, beat},{Ds2, beat},{Fs2, beat}
+    };
+    int melodyLen = sizeof(gameplayMelody) / sizeof(gameplayMelody[0]);
+
+    while(gameplayMusicRunning) {
+        play(gameplayMelody, melodyLen);
+        if(!gameplayMusicRunning) break;
+    }
+}
+
+void stopAllMusic()
+{
+    // Stop both music threads
+    menuMusicRunning = false;
+    gameplayMusicRunning = false;
+
+    // Give threads time to exit and clear Beeps
+    Sleep(200);
+
+    Beep(0, 0); //0hz beep to clear sound queue
+
 }
 
 
